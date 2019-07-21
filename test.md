@@ -180,9 +180,9 @@ class BreakerLogic
 
 ## 参考资料
 
-[服务注册与发现](https://en.swoft.org/docs/2.x/en/ms/govern/register-discovery.html)
-[服务熔断](https://en.swoft.org/docs/2.x/en/ms/govern/breaker.html)
-[服务限流](https://en.swoft.org/docs/2.x/en/ms/govern/limiter.html)
-[配置中心](https://en.swoft.org/docs/2.x/en/ms/govern/config.html)
+- [服务注册与发现](https://en.swoft.org/docs/2.x/en/ms/govern/register-discovery.html)
+- [服务熔断](https://en.swoft.org/docs/2.x/en/ms/govern/breaker.html)
+- [服务限流](https://en.swoft.org/docs/2.x/en/ms/govern/limiter.html)
+- [配置中心](https://en.swoft.org/docs/2.x/en/ms/govern/config.html)
 
 如果你喜欢 `Swoft` 的话, 欢迎给我们 [Start](https://github.com/swoft-cloud/swoft)
