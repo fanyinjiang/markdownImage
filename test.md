@@ -1,4 +1,4 @@
-# PHP 服务治理
+# 怎样使用 PHP 实现微服务
 
 ###  为什么要说服务治理
 
@@ -60,7 +60,7 @@
 
 ## 优雅的服务治理
 
-### 服务注册与发现
+### [服务注册与发现](https://en.swoft.org/docs/2.x/en/ms/govern/register-discovery.html)
 
 微服务治理过程中，经常会涉及注册启动的服务到第三方集群，比如 consul / etcd 等等，本章以 Swoft 框架中使用 swoft-consul 组件，实现服务注册与发现为例。
 ![Swoft](https://raw.githubusercontent.com/sakuraovq/markdownImage/master/20170103144218850.png)
@@ -126,7 +126,7 @@ class RpcProvider implements ProviderInterface
     }
 }
 ```
-### 服务熔断
+### [服务熔断](https://en.swoft.org/docs/2.x/en/ms/govern/breaker.html)
 
 在分布式环境下，特别是微服务结构的分布式系统中， 一个软件系统调用另外一个远程系统是非常普遍的。这种远程调用的被调用方可能是另外一个进程，或者是跨网路的另外一台主机, 这种远程的调用和进程的内部调用最大的区别是，远程调用可能会失败，或者挂起而没有任何回应，直到超时。更坏的情况是， 如果有多个调用者对同一个挂起的服务进行调用，那么就很有可能的是一个服务的超时等待迅速蔓延到整个分布式系统，引起连锁反应， 从而消耗掉整个分布式系统大量资源。最终可能导致系统瘫痪。
 
@@ -179,7 +179,7 @@ class BreakerLogic
     }
 }
 ```
-### 服务限流
+### [服务限流](https://en.swoft.org/docs/2.x/en/ms/govern/limiter.html)
 **限流、熔断、降级**这个强调多少遍都不过分，因为确实很重要。服务不行的时候一定要熔断。限流是一个保护自己最大的利器，如果没有自我保护机制，不管有多少连接都会接收，如果后端处理不过来，前端流量又很大的时候肯定就挂了。
 
 限流是对稀缺资源访问时，比如秒杀，抢购的商品时，来限制并发和请求的数量，从而有效的进行削峰并使得流量曲线平滑。限流的目的是对并发访问和并发请求进行限速，或者一个时间窗口内请求进行限速从而来保护系统，一旦达到或超过限制速率就可以拒绝服务，或者进行排队等待等。
@@ -233,7 +233,7 @@ class LimiterLogic
 ```
 key 这里支持 `symfony/expression-language` 表达式， 如果被限速会调用 `fallback`中定义的`limiterFallback` 方法
 
-### 配置中心
+###  [配置中心](https://en.swoft.org/docs/2.x/en/ms/govern/config.html)
 说起配置中心前我们先说说配置文件，我们并不陌生，它提供我们可以动态修改程序运行能力。引用别人的一句话就是：
 
 > 系统运行时(runtime)飞行姿态的动态调整！
@@ -302,11 +302,9 @@ class ApolloLogic
 
 以上就是一个简单的 Apollo 配置拉取，swoft-apollo 除此方法外，还提供了更多的使用方法。
 
-## 参考资料
+## 官方链接
 
-- [服务注册与发现](https://en.swoft.org/docs/2.x/en/ms/govern/register-discovery.html)
-- [服务熔断](https://en.swoft.org/docs/2.x/en/ms/govern/breaker.html)
-- [服务限流](https://en.swoft.org/docs/2.x/en/ms/govern/limiter.html)
-- [配置中心](https://en.swoft.org/docs/2.x/en/ms/govern/config.html)
+- [Doc](https://en.swoft.org/docs)
+- [swoft-cloud/community](https://gitter.im/swoft-cloud/community)
 
 如果你喜欢 `Swoft` 的话, 欢迎给我们 [Start](https://github.com/swoft-cloud/swoft)
