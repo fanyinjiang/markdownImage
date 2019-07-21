@@ -47,9 +47,9 @@
 
 你可以想象一下常驻内存给我们带来的好处 比如
 
-**只启动框架初始化** 如果常驻内存我们只是在启动的时候处理化框架初始化保持在内存中,就专心等待处理请求,
+- **只启动框架初始化** 如果常驻内存我们只是在启动的时候处理化框架初始化在内存中,专心处理请求
 
-**连接复用**，有些工程师并不能特别理解，如果不用连接池，来一个请求就发一个连接怎么样？这样就会导致后端资源连接过多。对一些基础服务来说，比如 Redis，数据库，连接是个昂贵的消耗。
+- **连接复用**，有些工程师并不能特别理解，如果不用连接池，来一个请求就发一个连接怎么样？这样就会导致后端资源连接过多。对一些基础服务来说，比如 Redis，数据库，连接是个昂贵的消耗。
 
 那么有没有好的方案呢？答案是有的，而且很多人都在用这个框架，它就是-`Swoft`。`Swoft`就是一个带有`服务治理`功能的[RPC](https://en.swoft.org/docs/2.x/zh-CN/rpc-server/index.html)框架。`Swoft`是首个 PHP常驻内存协程全栈框架, 基于 `Spring Boot`提出的约定大于配置的核心理念
 
@@ -180,13 +180,127 @@ class BreakerLogic
 }
 ```
 ### 服务限流
-***限流、熔断、降级**这个强调多少遍都不过分，因为确实很重要。服务不行的时候一定要熔断。限流是一个保护自己最大的利器，如果没有自我保护机制，不管有多少连接都会接收，如果后端处理不过来，前端流量又很大的时候肯定就挂了。
+**限流、熔断、降级**这个强调多少遍都不过分，因为确实很重要。服务不行的时候一定要熔断。限流是一个保护自己最大的利器，如果没有自我保护机制，不管有多少连接都会接收，如果后端处理不过来，前端流量又很大的时候肯定就挂了。
+
+限流是对稀缺资源访问时，比如秒杀，抢购的商品时，来限制并发和请求的数量，从而有效的进行削峰并使得流量曲线平滑。限流的目的是对并发访问和并发请求进行限速，或者一个时间窗口内请求进行限速从而来保护系统，一旦达到或超过限制速率就可以拒绝服务，或者进行排队等待等。
+
+`Swoft` 限流器底层采用的是令牌桶算法，底层依赖于 `Redis` 实现分布式限流。
+
+Swoft 限速器不仅可以限流控制器，也可以限制任何 bean 里面的方法，可以控制方法的访问速率。这里以下面使用示例详解
+
+```php
+<?php declare(strict_types=1);
+
+namespace App\Model\Logic;
+
+use Swoft\Bean\Annotation\Mapping\Bean;
+use Swoft\Limiter\Annotation\Mapping\RateLimiter;
+
+/**
+ * Class LimiterLogic
+ *
+ * @since 2.0
+ *
+ * @Bean()
+ */
+class LimiterLogic
+{
+    /**
+     * @RequestMapping()
+     * @RateLimiter(rate=20, fallback="limiterFallback")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function requestLimiter2(Request $request): array
+    {
+        $uri = $request->getUriPath();
+        return ['requestLimiter2', $uri];
+    }
+    
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function limiterFallback(Request $request): array
+    {
+        $uri = $request->getUriPath();
+        return ['limiterFallback', $uri];
+    }
+}
+```
+key 这里支持 `symfony/expression-language` 表达式， 如果被限速会调用 `fallback`中定义的`limiterFallback` 方法
 
 ### 配置中心
+说起配置中心前我们先说说配置文件，我们并不陌生，它提供我们可以动态修改程序运行能力。引用别人的一句话就是：
+
+> 系统运行时(runtime)飞行姿态的动态调整！
+
+我可以把我们的工作称之为在快速飞行的飞机上修理零件。我们人类总是无法掌控和预知一切。对于我们系统来说，我们总是需要预留一些控制线条，以便在我们需要的时候做出调整，控制系统方向（如灰度控制、限流调整），这对于拥抱变化的互联网行业尤为重要。
+
+对于单机版，我们称之为配置（文件）；对于分布式集群系统，我们称之为配置中心（系统）;
+
+#### 到底什么是分布式配置中心
+
+随着业务的发展、微服务架构的升级，服务的数量、程序的配置日益增多（各种微服务、各种服务器地址、各种参数），传统的配置文件方式和数据库的方式已无法满足开发人员对配置管理的要求：
+
+- 安全性：配置跟随源代码保存在代码库中，容易造成配置泄漏；
+- 时效性：修改配置，需要重启服务才能生效；
+- 局限性：无法支持动态调整：例如日志开关、功能开关；
+
+因此，我们需要配置中心来统一管理配置！把业务开发者从复杂以及繁琐的配置中解脱出来，只需专注于业务代码本身，从而能够显著提升开发以及运维效率。同时将配置和发布包解藕也进一步提升发布的成功率，并为运维的细力度管控、应急处理等提供强有力的支持。
+
+ 关于分布式配置中心，网上已经有很多开源的解决方案，例如：
+
+Apollo是携程框架部门研发的分布式配置中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性，适用于微服务配置管理场景。
+
+本章以`Apollo` 为例，从远端配置中心拉取配置以及安全重启服务。如果对  `Apollo` 不熟悉，可以先看`Swoft` 扩展  [`Apollo`](https://en.swoft.org/docs/2.x/en/extra/apollo.html) 组件以及阅读  `Apollo` 官方文档。
+
+本章以 `Swoft` 中使用 `Apollo` 为例，当  `Apollo` 配置变更后，重启服务(http-server / rpc-server/ ws-server)。如下是一个 agent 例子：
+
+```php
+<?php declare(strict_types=1);
 
 
+namespace App\Model\Logic;
 
+use Swoft\Apollo\Config;
+use Swoft\Apollo\Exception\ApolloException;
+use Swoft\Bean\Annotation\Mapping\Bean;
+use Swoft\Bean\Annotation\Mapping\Inject;
 
+/**
+ * Class ApolloLogic
+ *
+ * @since 2.0
+ *
+ * @Bean()
+ */
+class ApolloLogic
+{
+    /**
+     * @Inject()
+     *
+     * @var Config
+     */
+    private $config;
+
+    /**
+     * @throws ApolloException
+     */
+    public function pull(): void
+    {
+        $data = $this->config->pull('application');
+        
+        // Print data
+        var_dump($data);
+    }
+}
+```
+
+以上就是一个简单的 Apollo 配置拉取，swoft-apollo 除此方法外，还提供了更多的使用方法。
 
 ## 参考资料
 
