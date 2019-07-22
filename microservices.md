@@ -52,7 +52,7 @@ You can imagine the benefits that resident memory brings to us.
 
 - **Connection multiplexing**, some engineers can not specifically understand, if you do not need to connect to the pool, how about making a connection to a request? This will result in too many backend resource connections. For some basic services, such as Redis, databases, connections are an expensive drain.
 
-So is there a good plan? The answer is yes, and many people are using this framework, it is - `Swoft`. `Swoft` is a [RPC] (https://en.swoft.org/docs/2.x/zh-CN/rpc-server/index.html) framework with the `Service Governance` feature. `Swoft` is the first PHP resident memory coroutine full stack framework, based on the core concept of the `Spring Boot` convention is greater than the configuration
+So is there a good plan? The answer is yes, and many people are using this framework, it is - `Swoft`. `Swoft` is a [RPC](https://en.swoft.org/docs/2.x/zh-CN/rpc-server/index.html) framework with the `Service Governance` feature. `Swoft` is the first PHP resident memory coroutine full stack framework, based on the core concept of the `Spring Boot` convention is greater than the configuration
 
 `Swoft` provides a more elegant way to use `RPB` services like `Dubbo`, `Swoft` performance is great with similar `Golang` performance, here is my 'PC` vs. `Swoft` performance. Happening.
  
@@ -255,7 +255,7 @@ Therefore, we need to configure the center to manage the configuration! Freeing 
 
 Apollo is a distributed configuration center developed by Ctrip's framework department. It can centrally manage the configuration of different environments and different clusters of applications. It can be pushed to the application end in real time after configuration modification. It has the features of standardized authority and process management, and is suitable for microservices. Configure management scenarios.
 
-This chapter uses `Apollo` as an example to pull configuration and secure restart services from the remote configuration center. If you are unfamiliar with `Apollo`, you can first look at the `Swoft` extension [`Apollo`] (https://en.swoft.org/docs/2.x/en/extra/apollo.html) component and read `Apollo ` Official documentation.
+This chapter uses `Apollo` as an example to pull configuration and secure restart services from the remote configuration center. If you are unfamiliar with `Apollo`, you can first look at the `Swoft` extension [`Apollo`](https://en.swoft.org/docs/2.x/en/extra/apollo.html) component and read `Apollo ` Official documentation.
 
 This chapter uses `Apollo` in `Swoft` as an example. When the `Apollo` configuration changes, restart the service (http-server / rpc-server/ ws-server). The following is an example of an agent:
 ```php
