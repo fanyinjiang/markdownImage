@@ -54,7 +54,7 @@ You can imagine the benefits that resident memory brings to us.
 
 So is there a good plan? The answer is yes, and many people are using this framework, it is - `Swoft`. `Swoft` is a [RPC](https://en.swoft.org/docs/2.x/zh-CN/rpc-server/index.html) framework with the `Service Governance` feature. `Swoft` is the first PHP resident memory coroutine full stack framework, based on the core concept of the `Spring Boot` convention is greater than the configuration
 
-`Swoft` provides a more elegant way to use `RPB` services like `Dubbo`, `Swoft` performance is great with similar `Golang` performance, here is my 'PC` vs. `Swoft` performance. Happening.
+`Swoft` provides a more elegant way to use `RPC` services like `Dubbo`, `Swoft` performance is great with similar `Golang` performance, here is my 'PC` vs. `Swoft` performance. Happening.
  
 ![Swoft](https://raw.githubusercontent.com/sakuraovq/markdownImage/master/test.png)
 
