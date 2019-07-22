@@ -34,7 +34,7 @@ So what is the feature of using "services"?
 
 ### The challenge of service
 
-After the system is serviced, the dependency is complicated, and the number of interactions between the service and the service is increased. In the development mode of `fpm`, because the resident memory cannot be brought to us, every request must be from zero. Starting to load to the exit process, adding a lot of useless overhead, the database connection can not be reused and can not be protected, because `fpm` is the process-based `fpm` process number also determines the number of concurrent, this is also Fpm` development is simple to bring us problems. So why is the Internet platform `Java` more popular now, `.NET` and `PHP` will not work in this regard. Needless to say `PHP non-memory resident`. In addition, there are many other issues that need to be addressed.
+After the system is serviced, the dependency is complicated, and the number of interactions between the service and the service is increased. In the development mode of `fpm`, because the resident memory cannot be brought to us, every request must be from zero. Starting to load to the exit process, adding a lot of useless overhead, the database connection can not be reused and can not be protected, because `fpm` is the process-based `fpm` process number also determines the number of concurrent, this is also Fpm development is simple to bring us problems. So why is the Internet platform `Java` more popular now, `.NET` and `PHP` will not work in this regard. Needless to say `PHP non-memory resident`. In addition, there are many other issues that need to be addressed.
 - More and more services, complex configuration management
 - Complex service dependencies
 - Load balancing between services
