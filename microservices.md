@@ -298,7 +298,7 @@ class ApolloLogic
     }
 }
 ```
-The above is a simple Apollo configuration pull, in addition to this method, swowt-apollo provides more ways to use.
+The above is a simple Apollo configuration pull, in addition to this method, [`Swoft-Apollo`](https://en.swoft.org/docs/2.x/en/extra/apollo.html) provides more ways to use.
 
 ## Official link
 
